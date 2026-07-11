@@ -1,0 +1,5 @@
+osmnx>=1.9,<2
+networkx>=3.2
+matplotlib>=3.8
+numpy>=1.26
+scipy>=1.11
