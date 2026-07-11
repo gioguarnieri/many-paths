@@ -241,6 +241,33 @@ snippets and still need full-text verification.
     1–2 independent detours" — worth a paragraph in the paper.
   Outputs: `data/results/calibration_{city}[_rankstab].csv`,
   `figures/calibration_{city}.png`.
+- **Full 10-city portfolio at 5 km cores (2026-07-11)** — coverage ≥99.9%
+  everywhere; ~20 trips/edge; total ≈ 288k scored edges. Sorted by mean V
+  (std; p10–p90; stranding %; mean reliance/trip):
+
+  | city | scored | mean V | std | p10–p90 | strand % | reliance |
+  |---|---|---|---|---|---|---|
+  | são paulo | 16,281 | 0.364 | 0.077 | 0.31–0.43 | 0.08 | 0.58 |
+  | beijing | 9,458 | 0.361 | 0.083 | 0.30–0.44 | 0.03 | 0.61 |
+  | mumbai | 8,471 | 0.353 | 0.065 | 0.31–0.39 | 0.08 | 0.56 |
+  | cairo | 77,731 | 0.341 | 0.047 | 0.30–0.37 | 0.04 | 0.63 |
+  | dhaka | 31,301 | 0.337 | 0.055 | 0.29–0.37 | 0.05 | 0.60 |
+  | delhi | 20,721 | 0.336 | 0.070 | 0.28–0.37 | 0.18 | 0.60 |
+  | shanghai | 8,718 | 0.324 | 0.089 | 0.26–0.38 | 0.22 | 0.59 |
+  | mexico city | 26,926 | 0.318 | 0.058 | 0.27–0.36 | 0.00 | 0.58 |
+  | tokyo | 31,232 | 0.279 | 0.055 | 0.23–0.32 | 0.04 | 0.59 |
+  | osaka | 48,084 | 0.274 | 0.046 | 0.23–0.32 | 0.02 | 0.61 |
+
+  Observations for the paper: (i) Japanese grid cities are cleanly the
+  most redundant, São Paulo (one-way system) and Beijing (superblock
+  arterials) the least — the index separates *street-fabric types*, not
+  just density; (ii) mean reliance per trip is ≈0.56–0.63 in *every*
+  city — near-invariant, echoing Kirkley et al.'s betweenness
+  invariance; worth checking whether it is a property of the tolerance
+  geometry itself; (iii) stranding concentrates in Shanghai (0.22%) and
+  Delhi (0.18%) — gated/superblock fabric with few crossings.
+  Runtime: whole portfolio ≈ 10.5 h single-core equivalent (Cairo 4.7 h
+  of it), run as 4 parallel lanes overnight.
 
 ## Design decisions locked so far
 
