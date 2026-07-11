@@ -220,15 +220,37 @@ snippets and still need full-text verification.
   City contrast persists (SP mean and spread ~1.3–1.4× Tokyo's); mean
   reliance per trip now ≈0.58 in both (the 2 km SP/Tokyo gap 0.63/0.51
   was a core-area effect, not a city-wide one).
+- **Parameter calibration (gap #2 closed, 2026-07-10;
+  `src/calibrate.py`, 1,500-edge samples per city, common random numbers
+  across the δ grid, λ and max_alts resolved in post-processing via greedy
+  nesting)**. Results near-identical across São Paulo and Tokyo:
+  - **δ = 1.3 confirmed.** Rankings drift smoothly over δ∈[1.2, 1.6]
+    (adjacent-δ Spearman 0.89–0.98; ±0.1 around 1.3 gives ρ≈0.89–0.95),
+    but δ=1.1 is a *qualitatively different index* (ρ vs 1.3 ≈ 0.61 in
+    both cities, stranding ×3–5, widest spread): the near-shortest-only
+    regime. Report 1.2–1.4 as the robustness band.
+  - **λ = 1 confirmed (EPD precedent).** λ∈{0.5, 2} changes scale only:
+    edge rankings invariant (ρ ≥ 0.99); λ=1 keeps the widest dynamic
+    range (SP mean 0.36 vs 0.59 / 0.15 at λ=0.5 / 2).
+  - **max_alts never binds** — structural finding: greedy edge-disjoint
+    alternatives within tolerance average only 1.25 (SP) / 1.68 (Tokyo)
+    per trip, mean Σq ≈ 1.1–1.3, so any cap ≥ 2 gives identical results
+    (ρ ≥ 0.99, mean-V difference < 0.003). Route *portfolios* of ~2–3
+    (Zhu & Levinson) overlap heavily; *disjoint* within-tolerance
+    detours are scarce. The index is effectively "quality of the best
+    1–2 independent detours" — worth a paragraph in the paper.
+  Outputs: `data/results/calibration_{city}[_rankstab].csv`,
+  `figures/calibration_{city}.png`.
 
 ## Design decisions locked so far
 
 | Parameter | Value | Anchor |
 |---|---|---|
-| Stretch bound δ | 1.2–1.3 (test 1.1–1.6) | Zhu & Levinson envelope; Xu & Chen φ |
-| Route portfolio size | saturate after ~3 | Zhu & Levinson 249/657 routes |
+| Stretch bound δ | **1.3, calibrated** (robust 1.2–1.4, ρ≈0.9; avoid 1.1 — different regime) | Zhu & Levinson envelope; Xu & Chen φ; our sweep |
+| Saturation λ | **1, calibrated** (rankings invariant λ∈[0.5,2], ρ≥0.99) | Rohrer & Sterbenz §3.2; our sweep |
+| Alternatives cap max_alts | **4, never binds** (mean disjoint alts found 1.25–1.68; any cap ≥2 identical) | our sweep; portfolios ≠ disjoint detours |
 | Quality weighting | decay with extra time | Zhu & Levinson 50% <30 s |
-| Locality radius | ~5 km (2 km cores for now) | trip-length literature (⚠ pin) |
+| Locality radius | 5 km cores (6 km download, 1 km buffer), trips ≤5 km | trip-length literature (⚠ pin) |
 | Directionality | directed, always | our São Paulo saturation finding |
 | Aggregation | EPD-style `1−e^(−λk)` | Rohrer & Sterbenz §3.2 |
 | OD sampling | per-edge catchment, K≈20 trips, ≤2/origin | Wang et al. ~20-zone catchment; our coverage finding |

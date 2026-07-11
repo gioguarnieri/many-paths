@@ -48,9 +48,10 @@ FIG_DIR = Path(__file__).resolve().parent.parent / "figures"
 N_TRIPS = 800        # sampled OD pairs per city
 MIN_TRIP_M = 400.0   # shortest trips: below this, walking dominates anyway
 MAX_TRIP_M = 5000.0  # trip-length literature: most urban trips < 5 km
-DELTA_REL = 1.3      # accepted routes up to 1.3x the shortest (literature)
-LAM = 1.0
-MAX_ALTS = 4
+DELTA_REL = 1.3      # calibrated: rankings robust 1.2-1.4; 1.1 is a
+                     # different (near-shortest-only) regime -- calibrate.py
+LAM = 1.0            # calibrated: rankings invariant for lam in [0.5, 2]
+MAX_ALTS = 4         # calibrated: never binds (mean disjoint alts ~1.3-1.7)
 MAX_TRIPS_PER_EDGE = 25
 SEED = 42
 
